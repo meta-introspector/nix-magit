@@ -1,10 +1,11 @@
 {
   inputs = {
-    # nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     systems.url = "github:nix-systems/default";
   };
 
   outputs = {
+    self,
     systems,
     nixpkgs,
     ...
@@ -15,7 +16,7 @@
           f nixpkgs.legacyPackages.${system}
       );
   in {
-    packages = eachSystem (pkgs: let
+    apps = eachSystem (pkgs: let
       emacs-with-magit = pkgs.emacs.pkgs.withPackages (epkg: [
         epkg.magit
         epkg.color-theme-sanityinc-tomorrow
@@ -28,32 +29,38 @@
         epkg.color-theme-sanityinc-tomorrow
       ]);
     in {
-      default = pkgs.writeShellApplication {
-        name = "emacs-with-magit";
-        runtimeInputs = [
-          emacs-with-magit
-        ];
-        text = ''
-          if ! git rev-parse --quiet --show-toplevel; then
-            exit 1
-          fi
-          emacs -nw -Q -l ${./init.el} -f magit-status
-          exit
-        '';
+      nix-magit = {
+        type = "app";
+        program = "${pkgs.writeShellApplication {
+          name = "emacs-with-magit";
+          runtimeInputs = [
+            emacs-with-magit
+          ];
+          text = ''
+            if ! git rev-parse --quiet --show-toplevel; then
+              exit 1
+            fi
+            emacs -nw -Q -l ${./init.el} -f magit-status
+            exit
+          '';
+        }}";
       };
 
-      evil = pkgs.writeShellApplication {
-        name = "emacs-with-evil-magit";
-        runtimeInputs = [
-          emacs-with-evil-magit
-        ];
-        text = ''
-          if ! git rev-parse --quiet --show-toplevel; then
-            exit 1
-          fi
-          emacs -nw -Q -l ${./init.el} -l ${./evil.el} -f magit-status
-          exit
-        '';
+      nix-magit-evil = {
+        type = "app";
+        program = "${pkgs.writeShellApplication {
+          name = "emacs-with-evil-magit";
+          runtimeInputs = [
+            emacs-with-evil-magit
+          ];
+          text = ''
+            if ! git rev-parse --quiet --show-toplevel; then
+              exit 1
+            fi
+            emacs -nw -Q -l ${./init.el} -l ${./evil.el} -f magit-status
+            exit
+          '';
+        }}";
       };
     });
   };
