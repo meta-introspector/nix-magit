@@ -43,7 +43,7 @@
             emacs -nw -Q -l ${./init.el} -f magit-status
             exit
           '';
-        }}";
+        }}/bin/emacs-with-magit";
       };
 
       nix-magit-evil = {
@@ -60,7 +60,21 @@
             emacs -nw -Q -l ${./init.el} -l ${./evil.el} -f magit-status
             exit
           '';
-        }}";
+        }}/bin/emacs-with-evil-magit";
+      };
+    });
+
+    devShells = eachSystem (pkgs: let
+      emacs-with-magit = pkgs.emacs.pkgs.withPackages (epkg: [
+        epkg.magit
+        epkg.color-theme-sanityinc-tomorrow
+      ]);
+    in {
+      default = pkgs.mkShell {
+        buildInputs = [
+          emacs-with-magit
+          pkgs.git
+        ];
       };
     });
   };
