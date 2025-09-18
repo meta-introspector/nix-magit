@@ -1,0 +1,61 @@
+sh-5.2$ 
+sh-5.2$ 
+sh-5.2$ git push
+remote: Permission to akirak/nix-magit.git denied to jmikedupont2.
+fatal: unable to access 'https://github.com/akirak/nix-magit/': The requested URL returned error: 403
+sh-5.2$ git push origin
+To https://github.com/meta-introspector/nix-magit
+ ! [rejected]        master -> master (fetch first)
+error: failed to push some refs to 'https://github.com/meta-introspector/nix-magit'
+hint: Updates were rejected because the remote contains work that you do not
+hint: have locally. This is usually caused by another repository pushing to
+hint: the same ref. If you want to integrate the remote changes, use
+hint: 'git pull' before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+sh-5.2$ git checkout -b feature/nix
+Switched to a new branch 'feature/nix'
+sh-5.2$ git push origin
+fatal: The current branch feature/nix has no upstream branch.
+To push the current branch and set the remote as upstream, use
+
+    git push --set-upstream origin feature/nix
+
+To have this happen automatically for branches without a tracking
+upstream, see 'push.autoSetupRemote' in 'git help config'.
+
+sh-5.2$ git config push.autoSetupRemote
+sh-5.2$ git config push.autoSetupRemote true
+sh-5.2$ git push origin
+Enumerating objects: 10, done.
+Counting objects: 100% (10/10), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (8/8), done.
+Writing objects: 100% (8/8), 1.62 KiB | 552.00 KiB/s, done.
+Total 8 (delta 3), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (3/3), completed with 1 local object.        
+remote: 
+remote: Create a pull request for 'feature/nix' on GitHub by visiting:        
+remote:      https://github.com/meta-introspector/nix-magit/pull/new/feature/nix        
+remote: 
+To https://github.com/meta-introspector/nix-magit
+ * [new branch]      feature/nix -> feature/nix
+branch 'feature/nix' set up to track 'origin/feature/nix'.
+sh-5.2$ git remote show
+origin
+sh-5.2$ git remote show origin
+* remote origin
+  Fetch URL: 
+  Push  URL: https://github.com/akirak/nix-magit
+  HEAD branch: master
+  Remote branches:
+    evil        tracked
+    master      tracked
+    opinionated tracked
+  Local branch configured for 'git pull':
+    master merges with remote master
+  Local ref configured for 'git push':
+    master pushes to master (fast-forwardable)
+sh-5.2$ git remote rename origin master
+Renaming remote references: 100% (5/5), done.
+sh-5.2$ git remote add origin https://github.com/meta-introspector/nix-magit
+sh-5.2$ 
