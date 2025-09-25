@@ -1,7 +1,8 @@
 {
   inputs = {
     nixpkgs.url = "github:meta-introspector/nixpkgs?ref=feature/CRQ-016-nixify";
-    systems.url = "github:meta-introspector/default?ref=feature/CRQ-016-nixify";
+    systems.url = "github:meta-introspector/nix-systems-default-fork?ref=feature/CRQ-016-nixify";
+    #    https://github.com/meta-introspector/nix-systems-default-fork
   };
 
   outputs = {
